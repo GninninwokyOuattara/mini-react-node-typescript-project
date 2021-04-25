@@ -3,9 +3,16 @@ import logo from "./logo.svg";
 import "./index.css";
 import Navbar from "./Components/Navbar";
 import Form from "./Components/Form";
+import { default as ProductsWrapper } from "./Components/Products";
+import SingleProduct from "./Components/SingleProduct";
 import axios, { AxiosResponse } from "axios";
 
-type Products = { title: string; price: string }[] | [];
+interface Product {
+    title: string;
+    price: string;
+}
+
+type Products = Product[] | [];
 
 interface Data {
     PRODUCTS: Products;
@@ -13,7 +20,7 @@ interface Data {
 
 function App() {
     const [isLoading, setIsLoading] = useState(true);
-    const [Products, setProducts] = useState<Products>([]);
+    const [products, setProducts] = useState<Products>([]);
 
     //Product Fetching
     useEffect(() => {
@@ -35,25 +42,30 @@ function App() {
                 </Navbar>
             </div>
             {isLoading && (
-                <h1 className="text-ls font-bold text-center mt-5">
-                    Loading...
-                </h1>
+                <p className="text-ls font-bold text-center mt-5">Loading...</p>
             )}
 
             {/* Fetching ended but returned empty */}
-            {!isLoading && Products === [] && (
-                <h1 className="text-sm text-center mt-5">
-                    Could not find any products. Maybe create one ?
-                </h1>
-            )}
+
+            {!isLoading ? (
+                products.length == 0 ? (
+                    <p className="text-sm text-center mt-5">
+                        Could not find any products. Maybe create one ?
+                    </p>
+                ) : null
+            ) : null}
 
             {/* Fetch successfully completed with data returned */}
 
-            {!isLoading && Products !== [] && (
-                <h1 className="text-ls font-bold text-center mt-5">
-                    Data Found
-                </h1>
-            )}
+            {!isLoading ? (
+                products.length ? (
+                    <ProductsWrapper>
+                        {products.map((product: Product) => (
+                            <SingleProduct bookData={product} />
+                        ))}
+                    </ProductsWrapper>
+                ) : null
+            ) : null}
         </React.Fragment>
     );
 }
