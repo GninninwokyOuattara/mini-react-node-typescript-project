@@ -1,7 +1,19 @@
 import React, { useState } from "react";
 import axios from "axios";
 
-const Form: React.FC = () => {
+interface Product {
+    title: string;
+    price: string;
+}
+
+type Products = Product[] | [];
+
+interface props<T> {
+    setProducts: React.Dispatch<React.SetStateAction<T>>;
+    products: Products;
+}
+
+const Form: React.FC<props<Products>> = ({ products, setProducts }) => {
     const [title, setTitle] = useState("");
     const [price, setPrice] = useState("");
 
@@ -15,7 +27,7 @@ const Form: React.FC = () => {
                 "Content-type": "application/json; charset=utf-8",
             },
             url: "http://localhost:5000/products/",
-            data: { title: "Hello", price: "Bitches" },
+            data: { title: title, price: price },
         });
 
         // let res = await fetch("http://localhost:5000/products", {
@@ -26,9 +38,13 @@ const Form: React.FC = () => {
         //     },
         //     body: JSON.stringify({ title, price }),
         // });
+        if (res.status == 201) {
+            setProducts((products) => [...products, { title, price }]);
+        }
 
         setTitle((title) => "");
         setPrice((price) => "");
+
         console.log(res);
     };
 
