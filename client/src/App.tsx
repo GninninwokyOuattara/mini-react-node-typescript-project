@@ -60,8 +60,8 @@ function App() {
             {!isLoading ? (
                 products.length ? (
                     <ProductsWrapper>
-                        {products.map((product: Product) => (
-                            <SingleProduct bookData={product} />
+                        {products.map((product: Product, index: number) => (
+                            <SingleProduct bookData={product} key={index} />
                         ))}
                     </ProductsWrapper>
                 ) : null
