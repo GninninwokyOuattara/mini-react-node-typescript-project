@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import axios from "axios";
+import isValidInput from "../utils/validation";
 
 interface Product {
     title: string;
@@ -19,6 +20,12 @@ const Form: React.FC<props<Products>> = ({ products, setProducts }) => {
 
     const handleSubmit: React.FormEventHandler<HTMLFormElement> = async (e) => {
         e.preventDefault();
+
+        console.log(isValidInput(price));
+
+        if (!isValidInput(price)) {
+            return alert("Invalid Input");
+        }
 
         let res = await axios({
             method: "post",
