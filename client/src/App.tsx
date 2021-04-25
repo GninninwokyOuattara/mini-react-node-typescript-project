@@ -38,7 +38,7 @@ function App() {
         <React.Fragment>
             <div className="App">
                 <Navbar>
-                    <Form />
+                    <Form products={products} setProducts={setProducts} />
                 </Navbar>
             </div>
             {isLoading && (
